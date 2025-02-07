@@ -1,0 +1,58 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Kubb union discrimination with mappings bug reproduction",
+    "version": "1.0"
+  },
+  "components": {
+    "schemas": {
+      "FooBase": {
+        "type": "object",
+        "properties": {
+          "$type": {
+            "type": "string"
+          }
+        },
+        "required": ["$type"],
+        "additionalProperties": false,
+        "discriminator": {
+          "propertyName": "$type",
+          "mapping": {
+            "type-string": "#/components/schemas/FooString",
+            "type-number": "#/components/schemas/FooNumber"
+          }
+        }
+      },
+      "FooString": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/FooBase"
+          }
+        ],
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": ["value"],
+        "additionalProperties": false
+      },
+      "FooNumber": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/FooBase"
+          }
+        ],
+        "properties": {
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": ["value"],
+        "additionalProperties": false
+      }
+    }
+  }
+}
